@@ -17,9 +17,9 @@ public class TodoappApplication {
     public CommandLineRunner init(TodoRepository todoRepository) {
         return args -> {
 //            TodoRepository todoRepository = new TodoRepository();
-            todoRepository.Save(new TodoDto(null, "study", "JAVA" , false));
-            todoRepository.Save(new TodoDto(null, "cook", "kimbob" , false));
-            todoRepository.Save(new TodoDto(null, "workout", "run" , false));
+            todoRepository.save(new TodoDto(null, "study", "JAVA" , false));
+            todoRepository.save(new TodoDto(null, "cook", "kimbob" , false));
+            todoRepository.save(new TodoDto(null, "workout", "run" , false));
         };
     }
 }
