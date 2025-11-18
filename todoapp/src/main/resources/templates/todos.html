@@ -6,5 +6,9 @@
 </head>
 <body>
     <h1>할일 목록</h1>
+    <hr>
+    <li th:each="fruit : ${fruitList}" th:text="${fruit}"></li>
+    <H3 th:each="todo : ${todos}" th:text="${todo.getTitle()}"></H3>
+    <a href="/todos/new">입력</a>
 </body>
 </html>
