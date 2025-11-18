@@ -32,7 +32,8 @@ public class TodoController {
         //TodoRepository todoRepository = new TodoRepository(); //전역으로 변경
         TodoDto todo = todoRepository.Save(todoDto);
         model.addAttribute("todo", todo);
-        return "create";
+//        return "create";
+        return "redirect:/todos";
     }
 
 
