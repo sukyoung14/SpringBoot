@@ -5,13 +5,19 @@ import com.example.todoapp.repository.TodoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
 public class TodoController {
-    private final TodoRepository todoRepository = new TodoRepository();
+//    private final TodoRepository todoRepository = new TodoRepository();
+    private TodoRepository todoRepository;
+
+    public TodoController(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     @GetMapping("/todos")
     public String todos(Model model){
@@ -35,6 +41,17 @@ public class TodoController {
 //        return "create";
         return "redirect:/todos";
     }
+    @GetMapping("/todos/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        TodoDto todo = todoRepository.findById(id);
+        model.addAttribute("todo", todo);
+        return "detail";
+    }
 
+    @GetMapping("/todos/{id}/delete")
+    public String delete(@PathVariable Long id, Model model){
+        todoRepository.deleteById(id);
+        return "redirect:/todos";
+    }
 
 }
