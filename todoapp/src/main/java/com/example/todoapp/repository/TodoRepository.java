@@ -6,12 +6,14 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Repository
 public class TodoRepository {
     private final Map<Long, TodoDto> storage = new ConcurrentHashMap<>();
-    private Long nextId = 1l;
+    private Long nextId = 1L;
 
     public TodoDto save(TodoDto todo){
         if (todo.getId() == null) {
@@ -23,10 +25,24 @@ public class TodoRepository {
     public List<TodoDto> findAll(){
         return new ArrayList<TodoDto>(storage.values());
     }
-    public TodoDto findById(Long id) {
-        return storage.get(id);
+    public Optional<TodoDto> findById(Long id) {
+        //return storage.get(id);
+        return Optional.ofNullable(storage.get(id));
     }
     public void deleteById(Long id) {
         storage.remove(id);
     }
+
+    public List<TodoDto> findByTitleContaining(String keyword) {
+        return storage.values().stream()
+                .filter((todo) -> todo.getTitle().contains(keyword))
+                .toList();
+    }
+
+    public List<TodoDto> findBycompleted(boolean completed) {
+        return storage.values().stream()
+                .filter((todo) -> todo.isCompleted() == completed)
+                .toList();
+    }
+
 }

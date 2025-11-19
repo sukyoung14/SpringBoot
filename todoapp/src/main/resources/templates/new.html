@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>new</title>
-</head>
-<body>
-    <h1>new</h1>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}"
+>
+<div layout:fragment="content">
     <form action="/todos/create">
-        <input type="text" name="title">
-        <input type="text" name="content">
-        <input type="submit"><br>
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" class="form-control">
+        <label for="content" class="form-label">Content</label>
+        <input type="text" name="content" id="content" class="form-control">
+        <input type="submit" class="btn btn-primary"><br>
     </form>
-    <a href="/todos">목록</a>
-</body>
+</div>
 </html>

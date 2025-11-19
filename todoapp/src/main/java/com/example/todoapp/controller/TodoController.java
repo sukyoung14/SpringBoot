@@ -43,9 +43,15 @@ public class TodoController {
     }
     @GetMapping("/todos/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        TodoDto todo = todoRepository.findById(id);
-        model.addAttribute("todo", todo);
-        return "detail";
+        //TodoDto todo = todoRepository.findById(id);
+        try {
+            TodoDto todo = todoRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("todo not found!!!"));
+            model.addAttribute("todo", todo);
+            return "detail";
+        } catch (IllegalArgumentException e){
+            return "redirect:/todos";
+        }
     }
 
     @GetMapping("/todos/{id}/delete")
@@ -56,21 +62,64 @@ public class TodoController {
 
     @GetMapping("/todos/{id}/edit")
     public String edit(@PathVariable Long id, Model model){
-        TodoDto todo = todoRepository.findById(id);
-        model.addAttribute("todo", todo);
-        return "edit";
+        try {
+            TodoDto todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not found!!!"));
+            model.addAttribute("todo", todo);
+            return "edit";
+        } catch (IllegalArgumentException e){
+            return "redirect:/todos";
+        }
     }
 
     @GetMapping("/todos/{id}/update")
     public String update(@PathVariable Long id, @RequestParam String title, @RequestParam String content, @RequestParam(defaultValue = "false") boolean completed, Model model){
-        TodoDto todo = todoRepository.findById(id);
-        todo.setTitle(title);
-        todo.setContent(content);
-        todo.setCompleted(completed);
+        try {
+            TodoDto todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not found!!!"));
+            todo.setTitle(title);
+            todo.setContent(content);
+            todo.setCompleted(completed);
 
-        todoRepository.save(todo);
-        model.addAttribute("todo", todo);
-        return "redirect:/todos/"+id;
+            todoRepository.save(todo);
+            model.addAttribute("todo", todo);
+            return "redirect:/todos/" + id;
+        }
+        catch (IllegalArgumentException e){
+            return "redirect:/todos";
+        }
     }
+
+    @GetMapping("todos/search")
+    public String search(@RequestParam String keyword,Model model){
+        List<TodoDto> todoDtos = todoRepository.findByTitleContaining(keyword);
+        model.addAttribute("todos", todoDtos);
+        return "todos";
+    }
+
+    @GetMapping("/todos/active")
+    public String active(Model model){
+        List<TodoDto> todos = todoRepository.findBycompleted(false);
+        model.addAttribute("todos", todos);
+        return "todos";
+    }
+
+    @GetMapping("/todos/completed")
+    public String completed(Model model){
+        List<TodoDto> todos = todoRepository.findBycompleted(true);
+        model.addAttribute("todos", todos);
+        return "todos";
+    }
+
+    @GetMapping("/todos/{id}/toggle")
+    public String toggle(@PathVariable Long id, Model model){
+        try {
+            TodoDto todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not found!!!"));
+            todo.setCompleted(!todo.isCompleted());
+            todoRepository.save(todo);
+            return "redirect:/todos/" + id;
+        } catch (IllegalArgumentException e){
+            return "redirect:/todos";
+        }
+    }
+
 
 }
