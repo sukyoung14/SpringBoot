@@ -1,8 +1,5 @@
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default}">
+
 <div layout:fragment="content">
 
     <!--    <H3 th:each="todo : ${todos}" th:text="${todo.getTitle()}"></H3>-->
@@ -10,6 +7,11 @@
 <!--        <H3 th:text="${todo.getTitle()}"></H3>-->
 <!--        <a th:href="@{/todos/{id}(id=${todo.getId()} )  }">detail</a>-->
 <!--    </div>-->
+    <div>
+        <span>전체 : </span><span th:text = "${totalCount}"></span>
+        <span>미완료 : </span><span th:text = "${activeCount}"></span>
+        <span>완료 : </span><span th:text = "${completedCount}"></span>
+    </div>
 
     <table class="table table-striped">
         <thead>

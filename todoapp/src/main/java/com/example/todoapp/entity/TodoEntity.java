@@ -1,15 +1,20 @@
-package com.example.todoapp.dto;
+package com.example.todoapp.entity;
 
-public class TodoDto {
+import jakarta.persistence.*;
+
+@Entity
+public class TodoEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
     private boolean completed;
 
-    public TodoDto() {}
+    public TodoEntity() {
+    }
 
-    public TodoDto(Long id, String title, String content, boolean completed) {
-        this.id = id;
+    public TodoEntity(String title, String content, boolean completed) {
         this.title = title;
         this.content = content;
         this.completed = completed;
@@ -19,9 +24,9 @@ public class TodoDto {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;

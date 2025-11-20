@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Repository
 public class TodoRepository {
@@ -26,7 +25,6 @@ public class TodoRepository {
         return new ArrayList<TodoDto>(storage.values());
     }
     public Optional<TodoDto> findById(Long id) {
-        //return storage.get(id);
         return Optional.ofNullable(storage.get(id));
     }
     public void deleteById(Long id) {
@@ -43,6 +41,10 @@ public class TodoRepository {
         return storage.values().stream()
                 .filter((todo) -> todo.isCompleted() == completed)
                 .toList();
+    }
+
+    public void deleteCompleted() {
+        storage.entrySet().removeIf(item -> item.getValue().isCompleted());
     }
 
 }
