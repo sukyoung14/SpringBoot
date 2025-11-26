@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>List</h1>
+    <a href="/posts/new">new</a>
+    <a href="/posts/dummy">dummy</a>
+
+    <form action="/posts/search">
+        <input type="text" name="keyword">
+        <input type="submit">
+    </form>
+
+    <a th:href="@{/posts(page=0, sort='title,asc')}">제목순 정렬</a>
+    <a th:href="@{/posts(page=0, sort='id,desc')}">최신순 정렬</a>
+    <a th:href="@{/posts(page=0, sort='id,asc')}">오래된순 정렬</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post : ${postPage.getContent}">
+                <td th:text="${post.id}"></td>
+                <td>
+                    <a th:href="@{/posts/{id}(id=${post.id})}"
+                       th:text="${post.title}">
+                    </a>
+                </td>
+                <td th:text="${post.createdAt}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        총<span th:text="${postPage.totalElements}">100</span>개
+        <span th:text="${postPage.number + 1}">3</span> / <span th:text="${postPage.totalPages}">10</span> 페이지
+    </div>
+
+    <!--  페이지 네비게이션  -->
+    <div>
+        <a th:href="@{/posts(page=0)}">first</a>
+
+        <a th:if="${postPage.hasPrevious()}"
+           th:href="@{/posts(page=${postPage.number-1})}">pre</a>
+        
+        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${i != postPage.number}"
+               th:href="@{/posts(page=${i})}" th:text="${i+1}"></a>
+            <strong th:if="${i == postPage.number}" th:text="${i+1}"></strong>
+        </span>
+
+        <a th:if="${postPage.hasNext()}"
+           th:href="@{/posts(page=${postPage.number+1})}">next</a>
+
+        <a th:href="@{/posts(page=${postPage.totalPages-1})}">last</a>
+
+    </div>
+</body>
+</html>

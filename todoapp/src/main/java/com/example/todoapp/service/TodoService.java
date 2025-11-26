@@ -1,13 +1,17 @@
 package com.example.todoapp.service;
 
 import com.example.todoapp.dto.TodoDto;
+import com.example.todoapp.entity.TodoEntity;
+import com.example.todoapp.exception.ResourceNotFoundException;
 import com.example.todoapp.repository.TodoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class TodoService {
     private final TodoRepository todoRepository;
     public TodoService(TodoRepository todoRepository) {
@@ -15,52 +19,64 @@ public class TodoService {
     }
 
     public List<TodoDto> getAllTodos() {
-        List<TodoDto> todoDtoList = new ArrayList<>();
-        todoDtoList =  todoRepository.findAll();
-        return todoDtoList;
+
+        return todoRepository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public TodoDto getTodoById(Long id) {
+        TodoEntity entity = findEntityById(id);
+        return toDto(entity);
+    }
+
+    private TodoEntity findEntityById(Long id) {
         return  todoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("todo not found!!!"));
+                .orElseThrow(() -> new ResourceNotFoundException("not found : " + id));
     }
 
     public void deleteTodoById(Long id) {
-        getTodoById(id);
+        findEntityById(id);
         todoRepository.deleteById(id);
     }
 
-    public TodoDto updateTodoById(Long id, TodoDto newTodo) {
-        validateTitle(newTodo.getTitle());
-        TodoDto originTodo = getTodoById(id);
-        originTodo.setTitle(newTodo.getTitle());
-        originTodo.setContent(newTodo.getContent());
-        originTodo.setCompleted(newTodo.isCompleted());
+    public TodoDto updateTodoById(Long id, TodoDto dto) {
+        validateTitle(dto.getTitle());
 
-        return todoRepository.save(originTodo);
+        TodoEntity entity = findEntityById(id);
+        entity.setTitle(dto.getTitle());
+        entity.setContent(dto.getContent());
+        entity.setCompleted(dto.isCompleted());
+
+        return toDto(entity);
     }
 
-    public TodoDto createTodo(TodoDto todo) {
-        validateTitle(todo.getTitle());
-        return todoRepository.save(todo);
+    public TodoDto createTodo(TodoDto dto) {
+        validateTitle(dto.getTitle());
+        TodoEntity entity = new TodoEntity(dto.getTitle(), dto.getContent(), dto.isCompleted());
+        return toDto(todoRepository.save(entity));
     }
 
     public List<TodoDto> searchTodos(String keyword) {
-        return todoRepository.findByTitleContaining(keyword);
+        return todoRepository.findByTitleContaining(keyword).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<TodoDto> getTodosByCompleted(boolean completed) {
-        return todoRepository.findBycompleted(completed);
+        return todoRepository.findBycompleted(completed).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public TodoDto toggleCompleted(Long id) {
-        TodoDto todo = getTodoById(id);
-        todo.setCompleted(!todo.isCompleted());
-        return todoRepository.save(todo);
+        TodoEntity entity = findEntityById(id);
+        entity.setCompleted(!entity.isCompleted());
+        return toDto(entity);
     }
 
     public void deleteCompletedTodos() {
-        todoRepository.deleteCompleted();
+        todoRepository.deleteByCompleted(true);
     }
 
     private void validateTitle(String title) {
@@ -82,4 +98,12 @@ public class TodoService {
         return todoRepository.findBycompleted(false).size();
     }
 
+    private TodoDto toDto(TodoEntity todoEntity) {
+        TodoDto dto = new TodoDto();
+        dto.setId(todoEntity.getId());
+        dto.setTitle(todoEntity.getTitle());
+        dto.setContent(todoEntity.getContent());
+        dto.setCompleted(todoEntity.isCompleted());
+        return dto;
+    }
 }

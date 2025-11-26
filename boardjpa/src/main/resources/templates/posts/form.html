@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>FORM</h1>
+<form th:action="${post.id == null} ? '/posts' : @{/posts/{id}/update(id=${post.id})}" th:object="${post}" method="post">
+    <lable for="title"></lable>
+    <input type="text" id="title" th:field="*{title}">
+
+    <lable for="content"></lable>
+    <textarea id="content" cols="30" rows="10" th:field="*{content}"></textarea>
+    <input  type="submit">
+</form>
+</body>
+</html>
