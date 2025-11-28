@@ -5,6 +5,7 @@ import com.example.board.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -96,6 +97,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByTitleContaining(String keyword, Pageable pageable);
 
     Slice<Post> findAllBy(Pageable pageable);
+
+    // FindAll() => Jpa 자동생성
+    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments ")
+    List<Post> findAllWithComments();
+
+    @EntityGraph(attributePaths = {"comments"})
+    @Query("SELECT p FROM Post p")
+    List<Post> findAllWithCommentsEntityGraph();
+
 
 }
 

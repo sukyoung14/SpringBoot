@@ -19,12 +19,20 @@
     </form>
     
     <hr>
-
-    <form th:action="@{posts/{id}/comments(id=${post.id})}" method="post" th:object="${comment}" >
+    <form th:action="@{/posts/{id}/comments(id=${post.id})}" method="post" th:object="${comment}" >
         <input type="text" th:field="*{content}">
         <input type="submit">
     </form>
 
-
+    <hr>
+    <h3>comments</h3>
+    <div th:each="c : ${comments}">
+        <p th:text="${c.content}"></p>
+        <small th:text="${c.createdAt}"></small>
+        <form th:action="@{/posts/{postId}/comments/{cId}/delete(postId=${post.id},cId=${c.id})}" method="post">
+            <input type="submit" value="삭제">
+        </form>
+        <hr>
+    </div>
 </body>
 </html>

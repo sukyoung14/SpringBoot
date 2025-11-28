@@ -3,6 +3,10 @@ package com.example.board.service;
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,19 +24,22 @@ public class PostService {
     }
 
     public Post getPostById(Long id) {
-        return postRepository.findById(id);
+        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("post not found"));
     }
 
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+//        return postRepository.findAll(
+//                Sort.by(Sort.Direction.DESC, "createdAt")
+//        );
+        return postRepository.findByOrderByIdDesc();
     }
 
     @Transactional
-    public void updatePost(Long id, Post updatedPost) {
+    public Post updatePost(Long id, Post updatedPost) {
         Post post = getPostById(id);
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
-        postRepository.update(post);
+        return post;
     }
 
     @Transactional
@@ -43,16 +50,16 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public void testFirstLevelCache(){
-        Post post1 = postRepository.findById(1L);
+        Post post1 = postRepository.findById(1L).orElseThrow();
         System.out.println(post1.getTitle());
-        Post post2 = postRepository.findById(1L);
+        Post post2 = postRepository.findById(1L).orElseThrow();
         System.out.println(post1.getTitle());
 
         System.out.println(post1 == post2);
     }
     @Transactional
     public void testWriteBehind(){
-        Post post = postRepository.findById(1L);
+        Post post = postRepository.findById(1L).orElseThrow();
         System.out.println(post.getTitle());
         post.setTitle("hello");
         System.out.println("update 1");
@@ -64,14 +71,40 @@ public class PostService {
     }
     @Transactional
     public void testDirtyChecking() {
-        Post post = postRepository.findById(1L);
+        Post post = postRepository.findById(1L).orElseThrow();
         System.out.println("SELECT!!!!!");
         post.setTitle("hello");
         System.out.println("change title 1");
     }
 
     public List<Post> searchPosts(String keyword) {
-        return postRepository.findByTitleContaining(keyword);
+        //return postRepository.findByTitleContaining(keyword);
+        return postRepository.searchByTitleNative(keyword);
     }
 
+    public List<Post> searchPostsByTitleOrContent(String keyword) {
+        return postRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+    }
+
+    public List<Post> getRecentPosts() {
+//        return postRepository.findTop3ByOrderByCreatedAtDesc();      //1. 이름
+        return postRepository.findRecentPosts(PageRequest.of(0, 3));      //2. jpql
+//        return postRepository.findRecentPostsNative();               //3. Native sql
+    }
+
+    public Page<Post> getPostsPage(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void createDummyPosts(int count) {
+        for (int i = 0; i < count; i++) {
+            Post post = new Post("title - " + i, "게시물 내용");
+            postRepository.save(post);
+        }
+    }
+
+    public Page<Post> searchPostsPage(String keyword, Pageable pageable) {
+        return postRepository.findByTitleContaining(keyword, pageable);
+    }
 }
