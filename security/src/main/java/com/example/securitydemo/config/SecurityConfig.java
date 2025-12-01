@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/info", "/login", "/h2-console/**").permitAll() // 두개의 라우팅은 열고
+                .requestMatchers("/", "/info", "/login", "/signup", "/h2-console/**").permitAll() // 두개의 라우팅은 열고
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated() // 나머지 모두는 로그인 필요
