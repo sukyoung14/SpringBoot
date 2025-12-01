@@ -29,4 +29,11 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public boolean existsByUsername(String username){
+        UserRepository userRepository = this.userRepository;
+        return userRepository.existsByUsername(username);
+    }
+
 }
