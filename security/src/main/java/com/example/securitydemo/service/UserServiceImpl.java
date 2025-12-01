@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public User register(SignupDto signupDto) {
         User user = User.builder()
                 .username(signupDto.getUsername())
-                .password(passwordEncoder.encode(signupDto.getPassword()))
+                    .password(passwordEncoder.encode(signupDto.getPassword()))
                 .role("ROLE_USER")
                 .email(signupDto.getEmail())
                 .build();

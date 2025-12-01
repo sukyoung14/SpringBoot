@@ -1,6 +1,7 @@
 package com.example.instagram.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,22 +22,18 @@ public class User extends BaseEntity{
     private String password;
     @Column(nullable = false, length = 30)
     private String email;
+    @Column(nullable = false, length = 30)
+    private String name;
     @Column(nullable = false)
     private Role role;
     @Column(length = 200)
     private String bio;
 
-    public User(String username, String password, String email, String bio) {
+    @Builder
+    public User(String username, String password, String email, String name, Role role, String bio) {
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.role = Role.USER;
-        this.bio = bio;
-    }
-
-    public User(String username, String password, String email, Role role, String bio) {
-        this.username = username;
-        this.password = password;
+        this.name = name;
         this.email = email;
         this.role = role != null ? role : Role.USER;
         this.bio = bio;
