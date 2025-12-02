@@ -1,6 +1,6 @@
 package com.example.instagram.service;
 
-import com.example.instagram.dto.SignUpRequest;
+import com.example.instagram.dto.request.SignUpRequest;
 import com.example.instagram.entity.Role;
 import com.example.instagram.entity.User;
 import com.example.instagram.repository.UserRepository;
@@ -32,8 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByUsername(String username){
-        UserRepository userRepository = this.userRepository;
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public User findById(Long userid) {
+        return userRepository.findById(userid)
+                .orElseThrow();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.instagram.controller;
 
-import com.example.instagram.dto.SignUpRequest;
+import com.example.instagram.dto.request.SignUpRequest;
 import com.example.instagram.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
