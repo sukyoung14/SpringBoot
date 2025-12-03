@@ -5,12 +5,10 @@ import com.example.instagram.dto.request.PostCreateRequest;
 import com.example.instagram.entity.Post;
 import com.example.instagram.entity.User;
 import com.example.instagram.repository.PostRepository;
-import com.example.instagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
