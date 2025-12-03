@@ -1,8 +1,11 @@
 package com.example.instagram.service;
 
+import com.example.instagram.dto.response.ProfileResponse;
 import com.example.instagram.dto.request.SignUpRequest;
 import com.example.instagram.entity.Role;
 import com.example.instagram.entity.User;
+import com.example.instagram.repository.FollowRepository;
+import com.example.instagram.repository.PostRepository;
 import com.example.instagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PostRepository postRepository;
+    private final FollowRepository followRepository;
 
     @Override
     @Transactional
@@ -38,6 +43,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long userid) {
         return userRepository.findById(userid)
+                .orElseThrow();
+    }
+
+    @Override
+    public ProfileResponse getProfile(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow();
+
+
+        long postCount = postRepository.countByUserId(user.getId());
+        long followerCount = followRepository.countByFollowerId(user.getId());
+        long followingCount = followRepository.countByFollowingId(user.getId());
+
+        return ProfileResponse.from(user, postCount, followerCount, followingCount);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow();
     }
 

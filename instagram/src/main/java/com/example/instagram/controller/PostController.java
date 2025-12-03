@@ -1,7 +1,7 @@
 package com.example.instagram.controller;
 
-import com.example.instagram.dto.Reponse.CommentResponse;
-import com.example.instagram.dto.Reponse.PostResponse;
+import com.example.instagram.dto.response.CommentResponse;
+import com.example.instagram.dto.response.PostResponse;
 import com.example.instagram.dto.request.CommentRequest;
 import com.example.instagram.dto.request.PostCreateRequest;
 import com.example.instagram.security.CustomUserDetails;

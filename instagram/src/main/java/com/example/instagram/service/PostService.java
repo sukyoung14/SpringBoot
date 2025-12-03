@@ -1,6 +1,6 @@
 package com.example.instagram.service;
 
-import com.example.instagram.dto.Reponse.PostResponse;
+import com.example.instagram.dto.response.PostResponse;
 import com.example.instagram.dto.request.PostCreateRequest;
 import com.example.instagram.entity.Post;
 
@@ -11,5 +11,5 @@ public interface PostService {
     Post findById(Long postId);
     PostResponse getPost(Long postId);
     List<PostResponse> getAllPosts();
-
+    List<PostResponse> getPostsByUsername(String username);
 }

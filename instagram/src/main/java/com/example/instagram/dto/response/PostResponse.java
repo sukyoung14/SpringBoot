@@ -1,4 +1,4 @@
-package com.example.instagram.dto.Reponse;
+package com.example.instagram.dto.response;
 
 import com.example.instagram.entity.Post;
 import lombok.Builder;

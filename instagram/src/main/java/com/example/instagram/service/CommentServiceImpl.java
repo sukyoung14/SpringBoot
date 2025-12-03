@@ -1,6 +1,6 @@
 package com.example.instagram.service;
 
-import com.example.instagram.dto.Reponse.CommentResponse;
+import com.example.instagram.dto.response.CommentResponse;
 import com.example.instagram.dto.request.CommentRequest;
 import com.example.instagram.entity.Comment;
 import com.example.instagram.entity.Post;

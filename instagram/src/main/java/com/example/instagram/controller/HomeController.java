@@ -1,6 +1,6 @@
 package com.example.instagram.controller;
 
-import com.example.instagram.dto.Reponse.PostResponse;
+import com.example.instagram.dto.response.PostResponse;
 import com.example.instagram.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
