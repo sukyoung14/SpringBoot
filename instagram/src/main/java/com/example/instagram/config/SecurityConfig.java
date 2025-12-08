@@ -11,30 +11,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/auth/**","/css/**","/js/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/",true)
-                        .failureUrl("/auth/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                );
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/uploads/**", "/error").permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/auth/login")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/auth/login?error=true")
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("/")
+                .permitAll()
+            );
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 }

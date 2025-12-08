@@ -1,30 +1,31 @@
 package com.example.instagram.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="post_likes")
+@Table(name = "post_likes")
 @Getter
 @NoArgsConstructor
-public class Like extends BaseEntity {
+public class Like extends BaseEntity{
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Builder
-    public Like(User user, Post post) {
-        this.user = user;
+    public Like(Post post, User user) {
         this.post = post;
+        this.user = user;
     }
 }

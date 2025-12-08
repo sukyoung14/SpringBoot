@@ -16,8 +16,8 @@ public class CommentResponse {
     private Long userId;
     private String username;
 
-    public static CommentResponse from (Comment comment) {
-        return  CommentResponse.builder()
+    public static CommentResponse from(Comment comment) {
+        return CommentResponse.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())

@@ -21,15 +21,22 @@
                 <a href="/" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-house"></i>
                 </a>
+                <a href="/explore" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-compass"></i>
+                </a>
+                <a href="/search" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-search"></i>
+                </a>
                 <a href="/posts/new" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-plus-square"></i>
                 </a>
                 <a th:href="@{'/users/' + ${#authentication.name}}" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-person"></i>
                 </a>
+
                 <form th:action="@{/auth/logout}" method="post" class="d-inline">
                     <button type="submit" class="btn btn-outline-secondary">
-                        <i class="bi bi-box-arrow-right "></i>
+                        <i class="bi bi-box-arrow-right"></i>
                     </button>
                 </form>
             </div>

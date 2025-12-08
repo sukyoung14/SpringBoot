@@ -6,36 +6,57 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
+@Table(name = "users")
 @Getter
-@Setter
 @NoArgsConstructor
-@Table(name="users")
 public class User extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(nullable = false, unique = true, length=30)
     private String username;
+
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, length = 30)
+
+    @Column(nullable = false)
     private String email;
-    @Column(nullable = false, length = 20)
-    private String name;
+
     @Column(nullable = false)
     private Role role;
-    @Column(length = 200)
+
+    @Column(length=200)
     private String bio;
+
+    @Column(length = 20)
+    private String name;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
     @Builder
     public User(String username, String password, String email, String name, Role role, String bio) {
         this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
         this.role = role != null ? role : Role.USER;
         this.bio = bio;
+        this.name = name;
     }
+
+    public void updateProfile(String name, String bio) {
+        this.name = name;
+        this.bio = bio;
+    }
+
+    public void updateProfileImage(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+
+
 }
