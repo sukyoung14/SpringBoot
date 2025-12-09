@@ -1,6 +1,6 @@
-package com.example.restapi.dto.reaponse;
+package com.example.restapi.dto.response;
 
-import com.example.restapi.dto.MessageReponse;
+
 import com.example.restapi.entity.Todo;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,17 +13,16 @@ public class TodoResponse {
     private Long id;
     private String title;
     private String content;
-    private boolean complete;
-    private LocalDateTime createAt;
+    private boolean completed;
+    private LocalDateTime createdAt;
 
     public static TodoResponse from(Todo todo) {
         return TodoResponse.builder()
                 .id(todo.getId())
                 .title(todo.getTitle())
                 .content(todo.getContent())
-                .complete(todo.isCompleted())
-                .createAt(todo.getCreateAt())
+                .completed(todo.isCompleted())
+                .createdAt(todo.getCreatedAt())
                 .build();
-
     }
 }
