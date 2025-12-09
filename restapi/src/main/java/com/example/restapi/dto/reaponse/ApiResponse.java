@@ -1,4 +1,4 @@
-package com.example.restapi.exception;
+package com.example.restapi.dto.reaponse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
