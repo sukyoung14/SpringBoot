@@ -8,5 +8,4 @@ import com.example.restapi.dto.response.UserResponse;
 public interface AuthService {
     UserResponse signUp(SignupRequest request);
     TokenResponse login(LoginRequest request);
-
 }

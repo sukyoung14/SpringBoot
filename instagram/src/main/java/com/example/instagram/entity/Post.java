@@ -18,18 +18,14 @@ public class Post extends BaseEntity{
     @Column(nullable = false, length = 1000)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
     @Builder
-    public Post(String content, User user, String imageUrl) {
+    public Post(String content, User user) {
         this.content = content;
         this.user = user;
-        this.imageUrl = imageUrl;
     }
 }
 

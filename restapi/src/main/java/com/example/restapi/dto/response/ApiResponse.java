@@ -1,10 +1,7 @@
 package com.example.restapi.dto.response;
-
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.web.PageableDefault;
 
 @Getter
 @AllArgsConstructor

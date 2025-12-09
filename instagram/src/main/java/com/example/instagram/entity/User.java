@@ -35,9 +35,6 @@ public class User extends BaseEntity{
     @Column(length = 20)
     private String name;
 
-    @Column(name = "profile_image_url")
-    private String profileImageUrl;
-
     @Builder
     public User(String username, String password, String email, String name, Role role, String bio) {
         this.username = username;
@@ -48,15 +45,8 @@ public class User extends BaseEntity{
         this.name = name;
     }
 
-    public void updateProfile(String name, String bio) {
+    public void updateProfile(String name, String bio){
         this.name = name;
         this.bio = bio;
     }
-
-    public void updateProfileImage(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-
-
 }

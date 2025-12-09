@@ -5,7 +5,6 @@ import com.example.restapi.dto.request.SignupRequest;
 import com.example.restapi.dto.response.ApiResponse;
 import com.example.restapi.dto.response.TokenResponse;
 import com.example.restapi.dto.response.UserResponse;
-import com.example.restapi.entity.User;
 import com.example.restapi.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

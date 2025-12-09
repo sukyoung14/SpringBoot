@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,16 +36,15 @@ public class PostController {
 
     @PostMapping
     public String create(
-            @Valid @ModelAttribute PostCreateRequest postCreateRequest,
-            BindingResult bindingResult,
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam(value = "image", required = false) MultipartFile image
-            ) {
+        @Valid @ModelAttribute PostCreateRequest postCreateRequest,
+        BindingResult bindingResult,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
         if (bindingResult.hasErrors()) {
             return "post/form";
         }
 
-        postService.create(postCreateRequest, image, userDetails.getId());
+        postService.create(postCreateRequest, userDetails.getId());
 
         return "redirect:/";
     }

@@ -46,9 +46,6 @@ public class UserController {
         );
         model.addAttribute("isFollowing", isFollowing);
 
-        boolean isOwner = userDetails.getUsername().equals(username);
-        model.addAttribute("isOwner", isOwner);
-
         return "user/profile";
     }
 
@@ -56,7 +53,7 @@ public class UserController {
     public String toggleFollow(
             @PathVariable String username,
             @AuthenticationPrincipal CustomUserDetails userDetails
-            ) {
+    ) {
         followService.toggleFollow(userDetails.getId(), username);
         return "redirect:/users/" + username;
     }
