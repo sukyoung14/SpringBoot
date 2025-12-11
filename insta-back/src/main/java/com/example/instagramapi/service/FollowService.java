@@ -1,15 +1,12 @@
 package com.example.instagramapi.service;
 
 import com.example.instagramapi.dto.response.FollowResponse;
-import com.example.instagramapi.dto.response.PostResponse;
 import com.example.instagramapi.dto.response.UserResponse;
 import com.example.instagramapi.entity.Follow;
-import com.example.instagramapi.entity.Post;
 import com.example.instagramapi.entity.User;
 import com.example.instagramapi.exception.CustomException;
 import com.example.instagramapi.exception.ErrorCode;
 import com.example.instagramapi.repository.FollowRepository;
-import com.example.instagramapi.repository.PostRepository;
 import com.example.instagramapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
