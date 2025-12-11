@@ -6,15 +6,15 @@ import com.example.instagramapi.entity.Post;
 import com.example.instagramapi.entity.User;
 import com.example.instagramapi.exception.CustomException;
 import com.example.instagramapi.exception.ErrorCode;
+import com.example.instagramapi.repository.CommentRepository;
+import com.example.instagramapi.repository.PostLikeRepository;
 import com.example.instagramapi.repository.PostRepository;
 import com.example.instagramapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +22,8 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public PostResponse create(Long userId, PostCreateRequest request) {
@@ -37,27 +39,29 @@ public class PostService {
     }
 
     // 전체 계시물
-    public List<PostResponse> findAll() {
+    public List<PostResponse> findAll(Long currentUserId) {
         List<Post> posts = postRepository.findAllWithUser();
         return posts.stream()
-                .map(PostResponse::from)
+                .map(post -> toPostResponseWithStats(post, currentUserId))
                 .toList();
     }
     // 단일 게시물
-    public PostResponse findById(Long postId) {
+    public PostResponse findById(Long postId, Long currentUserId) {
         Post post = postRepository.findByIdWithUser(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
-        return PostResponse.from(post);
+        return toPostResponseWithStats(post, currentUserId);
+//        return PostResponse.from(post);
     }
     // 특정 사용자 게시물
-    public List<PostResponse> findByUsername(String username) {
+    public List<PostResponse> findByUsername(String username, Long currentUserId) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         List<Post> posts = postRepository.findByUserIdWithUser(user.getId());
 
         return posts.stream()
-                .map(PostResponse::from)
+                .map(post -> toPostResponseWithStats(post, currentUserId))
+                //.map(PostResponse::from)
                 .toList();
     }
 
@@ -69,5 +73,13 @@ public class PostService {
             throw new CustomException(ErrorCode.NOT_POST_OWNER);
         }
         postRepository.deleteById(postId);
+    }
+
+    private PostResponse toPostResponseWithStats(Post post, Long currentUserid){
+        boolean liked = currentUserid != null && postLikeRepository.existsByUserIdAndPostId(currentUserid, post.getId());
+        long likeCount = postLikeRepository.countByPostId(post.getId());
+        long commentCount = commentRepository.countByPostId(post.getId());
+
+        return PostResponse.from(post, liked, likeCount, commentCount);
     }
 }

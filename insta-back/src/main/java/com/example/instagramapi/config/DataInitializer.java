@@ -75,5 +75,24 @@ public class DataInitializer implements CommandLineRunner {
                         .build()
         );
 
+        Post post3 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post31 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post32 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post33 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post34 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post35 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post36 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post37 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post38 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post39 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post391 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post392 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post393 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post394 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post395 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post396 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post397 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+        Post post398 = postRepository.save(Post.builder().content("sample post2").user(test).build());
+
     }
 }

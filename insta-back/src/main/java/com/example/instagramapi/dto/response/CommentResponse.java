@@ -23,5 +23,4 @@ public class CommentResponse {
                 .createdAt(comment.getCreatedAt())
                 .build();
     }
-
 }
