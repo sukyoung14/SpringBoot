@@ -36,8 +36,8 @@ public class PostServiceImpl implements PostService {
                 .user(user)
                 .build();
 
-        Post savedPost = postRepository.save(post);
-        return PostResponse.from(savedPost);
+        Post saved = postRepository.save(post);
+        return PostResponse.from(saved);
 
     }
 
