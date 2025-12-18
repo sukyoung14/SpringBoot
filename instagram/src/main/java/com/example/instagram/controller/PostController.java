@@ -55,15 +55,17 @@ public class PostController {
             Model model,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        PostResponse post = postService.getPost(id);
+        Long userId = (userDetails != null) ? userDetails.getId() : 0L;
+        PostResponse post = postService.getPost(id, userId);
 
         List<CommentResponse> comments = commentService.getComments(id);
 
         model.addAttribute("post", post);
         model.addAttribute("commentRequest", new CommentRequest());
         model.addAttribute("comments", comments);
-        model.addAttribute("liked", likeService.isLiked(id, userDetails.getId()));
-        model.addAttribute("likeCount", likeService.getLikeCount(id));
+        // post 객체에 이미 좋아요, 북마크 정보가 포함되어 있으므로 아래는 불필요
+        // model.addAttribute("liked", likeService.isLiked(id, userDetails.getId()));
+        // model.addAttribute("likeCount", likeService.getLikeCount(id));
         return "post/detail";
     }
 
@@ -76,8 +78,10 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             Model model
     ) {
+        Long userId = (userDetails != null) ? userDetails.getId() : 0L; // userId 선언 위치 변경
+
         if (bindingResult.hasErrors()) {
-            PostResponse post = postService.getPost(postId);
+            PostResponse post = postService.getPost(postId, userId); // 이제 userId 사용 가능
             List<CommentResponse> comments = commentService.getComments(postId);
 
             model.addAttribute("post", post);
